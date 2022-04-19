@@ -1,0 +1,35 @@
+.card{
+    margin:5px;
+}
+
+.rodape-card{
+    color:var(--color-primary);
+    height: 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+.btn-detalhes{
+    background-color:var(--color-primary);
+    color:var(--color-font);
+}
+
+.btn-detalhes:hover{
+    background-color: var(--color-secondary);
+    color:var(--color-font);
+}
+
+.card-text{
+    max-height: 70px;
+    min-height: 70px;
+    overflow: hidden;
+}
+
+.img-cartao{
+    height:100%;
+    max-height: 200px;
+    min-width: 100%;
+}
+

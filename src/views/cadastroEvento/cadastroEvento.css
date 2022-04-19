@@ -1,0 +1,19 @@
+.cadastro-evento-container {
+	padding: 0 10%;
+}
+
+.cadastro-evento-container input,select,textarea {
+	margin: 10px 0;
+}
+
+.btn-cadastro {
+	background-color: var(--color-primary);
+	color: var(--color-font);
+	margin: 12px;
+	width: calc(100% - 24px);
+}
+
+.btn-cadastro:hover {
+	background-color: var(--color-secondary);
+	color: var(--color-font);
+}

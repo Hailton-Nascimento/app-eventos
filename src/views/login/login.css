@@ -1,0 +1,46 @@
+
+
+.login-content {
+	width: 100%;
+	padding: 15%;
+	margin: auto;
+	background-color: var(--color-primary);
+	height: 100vh;
+}
+.login-content form {
+	width: clamp(300px, 50%, 500px);
+}
+
+.btn-login {
+	background-color: var(--color-font);
+	color: var(--color-primary);
+	width: 100%;
+	border: none;
+}
+
+.btn-login:hover {
+	background-color: var(--color-secondary);
+	color: var(--color-font);
+}
+.opcoes-login {
+	font-size: 1.2rem;
+	display: flex;
+	justify-content:center;
+	align-items: center;
+	flex-wrap: nowrap;
+}
+.opcoes-login span {
+	margin: 0 10px;
+}
+
+.opcoes-login a {
+	display: block;
+	text-decoration: none;
+	color: var(--color-font);
+	transition: 0.3s ease-in;
+}
+
+
+.opcoes-login a:hover {
+	color: var(--color-secondary);
+}

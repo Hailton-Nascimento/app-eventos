@@ -1,0 +1,18 @@
+.navbar{
+    background-color: var(--color-primary);
+    padding: 10px 15px;
+}
+
+
+.nav-item a{
+    color: var(--color-font);
+    transition: .3s ease-in;
+}
+
+.nav-item a:hover{
+    color: var(--color-secondary);
+    font-weight: bold;
+}
+/* .nav-item fas{
+    color: var(--color-font) !important;
+} */

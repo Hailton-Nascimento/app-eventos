@@ -1,0 +1,11 @@
+:root{
+	--color-primary: #536162;
+	--color-secondary: #c06014;
+	--color-font:#F3F4ED;
+	--color-font-escura: #797c7c;
+	}
+
+	h3{
+		font-size:1.7rem;
+		color: var(--color-font-escura);
+	}
