@@ -15,7 +15,6 @@ function NovoUsuario() {
 
 	function cadastrar() {
 		setCarregando(true);
-
 		setMsgTipo(null);
 
 		if (!email || !senha) {
@@ -24,7 +23,7 @@ function NovoUsuario() {
 			setCarregando(false);
 			return;
 		}
-		
+
 		createUserWithEmailAndPassword(auth, email, senha)
 			.then((resultado) => {
 				setCarregando(false);
@@ -72,8 +71,10 @@ function NovoUsuario() {
 					/>
 
 					{carregando ? (
-						<div className="spinner-border text-warning" role="status">
-							<span className="sr-only"></span>
+						<div className=" text-center container-spinner">
+							<div className="spinner-border text-warning" role="status">
+								<span className="sr-only"></span>
+							</div>
 						</div>
 					) : (
 						<button

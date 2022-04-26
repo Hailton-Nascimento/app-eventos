@@ -11,10 +11,18 @@ function Login() {
 	const [email, setEmail] = useState("");
 	const [senha, setSenha] = useState("");
 	const [msgTipo, setMsgTipo] = useState("");
+	const [loading, setLoading] = useState("");
+
 	const dispatch = useDispatch();
 	const isLogado = useSelector((state) => state.usuarioLogado);
 
 	function logar() {
+		if (!email || !senha) {
+			return
+		}
+
+		setLoading(true)
+
 		signInWithEmailAndPassword(auth, email, senha)
 			.then((_) => {
 				setMsgTipo("sucesso");
@@ -54,13 +62,24 @@ function Login() {
 						placeholder="Senha"
 					/>
 
+
+
 					<button
 						onClick={logar}
-						className="btn btn-lg btn-block btn-login"
+						className={`btn btn-lg btn-block btn-login ${loading && "disabled"}`}
 						type="button"
 					>
 						Logar
 					</button>
+					{
+
+						loading &&
+						<div className=" text-center container-spinner">
+							<div className="spinner-border text-warning" role="status">
+								<span className="sr-only"></span>
+							</div>
+						</div>
+					}
 
 					<div className="msg-login text-white text-center my-5">
 						{msgTipo === "sucesso" && (

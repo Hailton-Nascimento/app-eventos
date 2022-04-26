@@ -1,24 +1,72 @@
-import React, { useState, useEffect } from "react";
-import "./eventoDetalhes.css";
-import { Link, Navigate, useParams } from "react-router-dom";
-import { db, storage } from "../../config/firebase";
+import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { ref, getDownloadURL } from "firebase/storage";
+import { Link, Navigate, useParams } from "react-router-dom";
+import toast, { Toaster } from 'react-hot-toast';
 
-import { doc, getDoc, writeBatch } from "firebase/firestore";
+import { ref, getDownloadURL,deleteObject  } from "firebase/storage";
+import { doc, getDoc, writeBatch, deleteDoc } from "firebase/firestore";
+
+import { db, storage } from "../../config/firebase";
 import Navbar from "../../components/navbar";
+
+import "./eventoDetalhes.css";
+
+
+
 
 function EventoDetalhes(props) {
 	const [evento, setEvento] = useState({});
 	const [urlImg, setUrlImg] = useState("");
-	const usuario = useSelector((state) => state.usuarioEmail);
-
 	const [loading, setLoading] = useState(true);
 	const [excluido, setExcluido] = useState(false);
+	const usuario = useSelector((state) => state.usuarioEmail);
 	const { id } = useParams();
 
 	const batch = writeBatch(db);
 	const docRef = doc(db, "eventos", id);
+
+	function removerEvento() {
+		setLoading(true);
+		deleteDoc(doc(db, "eventos", id))
+			.then(()=>{
+				const desertRef = ref(storage, `imagens/${evento.foto}`);
+				deleteObject(desertRef).then(() => {
+					console.log("foto Deletada");
+				})
+			})
+			.then(() => {
+				
+				setTimeout(() => {
+					setExcluido(true);
+					setLoading(false);
+				}, 500);
+			}).catch(()=>{
+				console.log("Erro au tentar excluir evento.");
+			})
+	}
+
+
+	function confirmaExclusao() {
+		console.log("tentou excluir")
+		toast((t) => (
+		  <span>
+			<b>Confirma Excluir o Evento?</b>
+			<br />
+			<button className="btn btn-danger my-4 mx-1" onClick={() => {
+			  toast.dismiss(t.id)
+			  removerEvento()
+			}}>
+			  Confirma
+			</button>
+			<button className="btn btn-info m-4 text-white"
+			  onClick={() => toast.dismiss(t.id)}
+			>
+			  Cancela
+			</button>
+		  </span>
+		));
+	  }
+
 
 	useEffect(() => {
 		setLoading(true)
@@ -33,7 +81,6 @@ function EventoDetalhes(props) {
 				setLoading(false);
 			});
 
-			console.log(evento);
 		});
 	}, [id]);
 
@@ -41,7 +88,7 @@ function EventoDetalhes(props) {
 		return (
 			<>
 				<Navbar />
-				<div className="text-center">
+				<div className="text-center container-spinner">
 					<div className="spinner spinner-border  text-warning  m-5" role="status">
 						<span className="sr-only"></span>
 					</div>
@@ -54,17 +101,18 @@ function EventoDetalhes(props) {
 		return <Navigate replace to="/" />;
 	}
 
+
 	return (
 		<>
 			<Navbar />
-			{/* <Toaster /> */}
+			<Toaster/>
 
 			<div className="container-fluid">
 				<div className="row">
 					<img src={urlImg} className="img-banner" alt="Foto" />
 					<div className="eye">
 						<i className="fas fa-eye" />
-						<span>{evento.visualizacoes+1}</span>
+						<span>{evento.visualizacoes + 1}</span>
 					</div>
 				</div>
 
@@ -115,7 +163,7 @@ function EventoDetalhes(props) {
 				)}
 
 				{usuario === evento.usuario && (
-					<button type="button" className="btn btn-lg  mt-3 mb-5 btn-deletar">
+					<button type="button" onClick={confirmaExclusao} className="btn btn-lg  mt-3 mb-5 btn-deletar">
 						Remover Evento
 					</button>
 				)}

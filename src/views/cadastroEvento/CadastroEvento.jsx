@@ -6,7 +6,7 @@ import "./cadastroEvento.css";
 
 import { storage, db } from "../../config/firebase";
 
-import { ref, uploadBytes } from "firebase/storage";
+import { ref, uploadBytes, deleteObject } from "firebase/storage";
 import {
 	collection,
 	addDoc,
@@ -16,9 +16,11 @@ import {
 } from "firebase/firestore";
 import Navbar from "../../components/navbar";
 
+
 function CadastroEvento(props) {
 	const [redirecionar, setRedirecionar] = useState();
 	const [loading, setLoading] = useState();
+	const isLogado = useSelector((state) => state.usuarioLogado);
 	const [msgTipo, setMsgTipo] = useState();
 	const [titulo, setTitulo] = useState();
 	const [tipo, setTipo] = useState();
@@ -32,9 +34,9 @@ function CadastroEvento(props) {
 	const { id } = useParams();
 
 	useEffect(() => {
+
 		if (id) {
 			setLoading(true);
-
 			const docRef = doc(db, "eventos", id);
 			getDoc(docRef).then((doc) => {
 				const { titulo, tipo, detalhes, data, hora, foto, visualizacoes } =
@@ -47,7 +49,7 @@ function CadastroEvento(props) {
 				setFotoAtual(foto);
 				setVisualizacoes(visualizacoes);
 				setLoading(false);
-				console.log("evento");
+			
 			});
 		}
 	}, [id]);
@@ -58,6 +60,12 @@ function CadastroEvento(props) {
 		setMsgTipo(null);
 		setLoading(1);
 		if (fotoNova) {
+	
+			const desertRef = ref(storage, `imagens/${fotoAtual}`);
+			deleteObject(desertRef).then(() => {
+				console.log("foto Deletada");
+			})
+
 			const storageRef = ref(storage, `imagens/${fotoNova.name}`);
 			uploadBytes(storageRef, fotoNova);
 		}
@@ -121,10 +129,13 @@ function CadastroEvento(props) {
 				setLoading(0);
 			});
 	}
+	if (!isLogado) {
+		return <Navigate to="/" />
+	}
 
 	return (
 		<>
-	
+
 			{redirecionar && <Navigate to="/eventos/:id" />}
 			<Navbar />
 			<div className="cadastro-evento-container col-12 mt-5">
@@ -141,6 +152,7 @@ function CadastroEvento(props) {
 							onChange={({ target: { value } }) => setTitulo(value)}
 							type="text"
 							className="form-control"
+							required
 							value={titulo}
 						/>
 					</div>
@@ -178,6 +190,7 @@ function CadastroEvento(props) {
 							<input
 								onChange={({ target: { value } }) => setData(value)}
 								type="date"
+								required
 								className="form-control"
 								value={data && data}
 							/>
@@ -186,6 +199,7 @@ function CadastroEvento(props) {
 						<div className="col-6">
 							<label>Hora:</label>
 							<input
+								required
 								onChange={({ target: { value } }) => setHora(value)}
 								type="time"
 								className="form-control"
@@ -209,11 +223,11 @@ function CadastroEvento(props) {
 					</div>
 
 					<div className="row">
-						{loading > 0 ? (<div className=" text-center">
+						{loading > 0 ? (<div className=" text-center container-spinner">
 							<div className="spinner-border text-warning" role="status">
 								<span className="sr-only"></span>
 							</div>
-							</div>
+						</div>
 						) : (
 							<button
 								onClick={id ? atualizar : cadastrar}

@@ -10,23 +10,23 @@ import "./home.css";
 import CardEvento from "../../components/cardEvento";
 
 function Home() {
-	const { id } = useParams();
+	const {  user } = useParams();
 	const [eventos, setEventos] = useState([]);
 	const [pesquisa, setPesquisa] = useState("");
-	const listaeventos = [];
-	const { usuarioEmail, usuarioLogado } = useSelector((state) => state);
+
+	const { usuarioEmail } = useSelector((state) => state);
 	const listaEventos = [];
 
 	useEffect(() =>{
-		if (id) {
-			console.log("executou o parametro");
+		if (user) {
+	
 			const q = query(
 				collection(db, "eventos"),
 				where("usuario", "==", usuarioEmail)
 			);
 			getDocs(q).then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
-					console.log(doc.data());
+		
 					if(doc.data().titulo.toLowerCase().indexOf(pesquisa.toLowerCase())>=0){
 						listaEventos.push({
 							id: doc.id,
@@ -51,10 +51,11 @@ function Home() {
 					}
 				});
 				setEventos(listaEventos);
-				console.log(listaEventos);
+
 			});
 		}
-	}, [pesquisa,id]);
+
+	}, [pesquisa,user]);
 
 	return (
 		<>

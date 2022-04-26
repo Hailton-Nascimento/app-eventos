@@ -13,7 +13,7 @@ function CardEvento({ id, img, titulo, detalhes, visualizacoes }) {
         .then((url) => {
             setUrlImagem(url);
         });
-		console.log()
+
 	}, [urlImagem]);
 
 	return (

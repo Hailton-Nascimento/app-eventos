@@ -7,14 +7,16 @@ import { getStorage } from "firebase/storage";
 import { getFirestore } from "firebase/firestore";
 
 
+
 const firebaseConfig = {
-	apiKey: "AIzaSyBKD7s2t5cNEpSQ8hvHpAJ9HxsGW6u_v04",
-	authDomain: "app-eventos-e1850.firebaseapp.com",
-	projectId: "app-eventos-e1850",
-	storageBucket: "app-eventos-e1850.appspot.com",
-	messagingSenderId: "513817423926",
-	appId: "1:513817423926:web:05b7e32fb01369b5ee2897",
-};
+	apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+	authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+	storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.REACT_APP_FIREBASE_APP_ID
+  };
+
 
 const firebase = initializeApp(firebaseConfig);
 

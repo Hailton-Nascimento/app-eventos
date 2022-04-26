@@ -44,3 +44,7 @@
 .opcoes-login a:hover {
 	color: var(--color-secondary);
 }
+
+.container-spinner{
+margin: 15px;
+}
