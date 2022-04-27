@@ -10,24 +10,27 @@ import "./home.css";
 import CardEvento from "../../components/cardEvento";
 
 function Home() {
-	const {  user } = useParams();
+	const { user } = useParams();
 	const [eventos, setEventos] = useState([]);
 	const [pesquisa, setPesquisa] = useState("");
 
 	const { usuarioEmail } = useSelector((state) => state);
-	const listaEventos = [];
-
-	useEffect(() =>{
-		if (user) {
 	
+
+	useEffect(() => {
+		const listaEventos = [];
+
+		if (user) {
+		
 			const q = query(
 				collection(db, "eventos"),
 				where("usuario", "==", usuarioEmail)
 			);
 			getDocs(q).then((querySnapshot) => {
 				querySnapshot.forEach((doc) => {
-		
-					if(doc.data().titulo.toLowerCase().indexOf(pesquisa.toLowerCase())>=0){
+					if (
+						doc.data().titulo.toLowerCase().indexOf(pesquisa.toLowerCase()) >= 0
+					) {
 						listaEventos.push({
 							id: doc.id,
 							...doc.data(),
@@ -36,7 +39,6 @@ function Home() {
 				});
 				setEventos(listaEventos);
 			});
-	
 		} else {
 			const q = query(collection(db, "eventos"));
 			getDocs(q).then((querySnapshot) => {
@@ -51,11 +53,10 @@ function Home() {
 					}
 				});
 				setEventos(listaEventos);
-
 			});
 		}
-
-	}, [pesquisa,user]);
+		console.log("atulizou dados");
+	}, [pesquisa, user,usuarioEmail]);
 
 	return (
 		<>
@@ -86,4 +87,3 @@ function Home() {
 	);
 }
 export default Home;
-

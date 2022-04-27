@@ -13,8 +13,8 @@ function CardEvento({ id, img, titulo, detalhes, visualizacoes }) {
         .then((url) => {
             setUrlImagem(url);
         });
-
-	}, [urlImagem]);
+console.log("alterou imagem")
+	}, [img]);
 
 	return (
 		<div className=" card col-md-3 col-sm-12" key={id}>

@@ -22,8 +22,7 @@ function EventoDetalhes(props) {
 	const usuario = useSelector((state) => state.usuarioEmail);
 	const { id } = useParams();
 
-	const batch = writeBatch(db);
-	const docRef = doc(db, "eventos", id);
+
 
 	function removerEvento() {
 		setLoading(true);
@@ -70,6 +69,8 @@ function EventoDetalhes(props) {
 
 	useEffect(() => {
 		setLoading(true)
+		const batch = writeBatch(db);
+		const docRef = doc(db, "eventos", id);
 		getDoc(docRef).then((doc) => {
 			const data = doc.data();
 			setEvento({ ...data });
@@ -80,8 +81,8 @@ function EventoDetalhes(props) {
 				setUrlImg(url);
 				setLoading(false);
 			});
-
 		});
+	
 	}, [id]);
 
 	if (loading) {
